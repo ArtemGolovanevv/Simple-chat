@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import AvatarIcons from './AvatarIcons'
 import MessageModel from './MessageModel'
 
@@ -25,6 +25,14 @@ export default class ChatItem extends Component <IChatMessageComponentProps> {
                         <Text style = {styles.sender}>
                             {item.firstName}, {item.lastName}
                         </Text>
+
+                        {item.images ?
+                        <Image
+                        source={{uri: item.images}}
+                        style={{width: 200, height: 200}}
+
+
+                        /> : null}
 
                         <Text style = {styles.message}>
                             {item.message}
@@ -52,7 +60,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         paddingHorizontal: 10,
         paddingVertical: 5,
-        borderWidth: 1,
+       // borderWidth: 1,
         backgroundColor: '#d5d8d4',
     },
     textContainerLeft: {

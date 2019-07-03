@@ -1,4 +1,4 @@
-import IMessageItemImage from './Graphic'
+import IMessageItemImage from '../trash/Graphic'
     export default interface MessageModel {
         firstName: string,
         lastName: string,
@@ -6,8 +6,8 @@ import IMessageItemImage from './Graphic'
         avatar: string,
         isMe: boolean,
         isShowAvatar: boolean,
-        graphicMaterial: IMessageItemImage[],
-        getFullName: (first: string, last: string) => string
-        getInitial: (first: string, last: string) => string
+        images: string,
+        getFullName: (first: string, last: string) => string,
+        getInitial: (first: string, last: string) => string,
 
     }

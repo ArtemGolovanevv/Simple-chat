@@ -1,4 +1,4 @@
-export interface IMessageItemImage {
+export default interface IMessageItemImage {
     uri: string,
 }
 

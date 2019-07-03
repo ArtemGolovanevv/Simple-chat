@@ -10,7 +10,7 @@ import {Header} from "react-navigation";
 import {Icon} from "react-native-elements";
 import React from "react";
 
-export const TextInputView = ({onSendBtnPressed, _onTyping, HEADER_SIZE, chatInputText }) => {
+export const TextInputView = ({onSendBtnPressed, _onTyping, HEADER_SIZE, chatInputText, onIconPressed }) => {
     return (
         <KeyboardAvoidingView
             keyboardVerticalOffset = {Header.HEIGHT + HEADER_SIZE}
@@ -18,6 +18,7 @@ export const TextInputView = ({onSendBtnPressed, _onTyping, HEADER_SIZE, chatInp
             <View style = {styles.inputBar}>
                 <Icon
                     name={'attach-file'}
+                    onPress={onIconPressed}
                    // style = {styles.iconStyle}
                 />
                 <TextInput
@@ -39,7 +40,7 @@ export const TextInputView = ({onSendBtnPressed, _onTyping, HEADER_SIZE, chatInp
             </View>
         </KeyboardAvoidingView>
     )
-}
+};
 
 const styles = StyleSheet.create ({
 

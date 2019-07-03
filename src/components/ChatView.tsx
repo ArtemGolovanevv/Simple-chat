@@ -4,19 +4,26 @@ import {View,
         StyleSheet,
         FlatList,
         Keyboard,
-        TouchableWithoutFeedback} from 'react-native'
+        TouchableWithoutFeedback, Alert} from 'react-native'
 import ChatItem from './ChatItem'
 import MessageModel from './MessageModel'
 import isIphoneX from './isIphoneXFamily'
 import TextInputView from './TextInput'
+import IMessageItemImage from '../trash/Graphic'
+import ImagePicker from 'react-native-image-picker'
 
 
 interface IChatMessageItem {
     message: string,
     firstName: string,
     lastName: string,
-    graphicItem: []
-   // date: Date(),
+    images: string
+
+    //IMessageItemImage[],
+    // imageViewerVisible: boolean,
+    // startIndex: number,
+    // modalImageViewerImages: IMessageItemImage[],
+    // images: IMessageItemImage[],
 }
 
 interface IChatViewStateProps {
@@ -28,6 +35,7 @@ type IChatMessageComponentProps = MessageModel
     const tmpData = [
         {
             firstName: 'Title 1',
+            lastName: 'some',
             message: 'Message short 1. Short message.'
         },
         {
@@ -40,12 +48,24 @@ type IChatMessageComponentProps = MessageModel
         },
     ];
 
+    const options = {
+    title: 'Select attachment',
+    mediaType: 'mixed' as 'mixed',
+    videoQuality: 'high' as 'high',
+    takePhotoButtonTitle: 'Take Photo or Video',
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    },
+};
+
 export default class ChatView extends Component <IChatMessageComponentProps, IChatViewStateProps> {
     public static defaultProps: Partial<IChatMessageComponentProps> = {
         message: '',
         isMe: false,
         firstName: 'Test',
-        lastName: 'Chat'
+        lastName: 'Chat',
+        images: ''
     };
 
     public constructor(props: IChatMessageComponentProps) {
@@ -55,6 +75,24 @@ export default class ChatView extends Component <IChatMessageComponentProps, ICh
             chatInputText: '',
         }
     };
+
+    private onIconPressed = () => {
+        const {chatMessages } = this.state;
+        const chatMessagesNew = chatMessages.slice()
+        ImagePicker.showImagePicker (options, response => {
+            if (response.uri) {
+                chatMessagesNew.push({
+                        firstName: 'Test',
+                        lastName: 'Chat',
+                        images: response.uri,
+                        message: ''
+                })
+                this.setState({chatMessages: chatMessagesNew})
+            }
+            Alert.alert('alert', response.uri)
+            console.log(chatMessagesNew)
+        })
+    }
 
     private _onTyping = (text) => {
         console.log('some text')
@@ -68,8 +106,11 @@ export default class ChatView extends Component <IChatMessageComponentProps, ICh
         const chatMessagesNew = chatMessages.slice();
         chatMessagesNew.push({
             firstName: 'Test',
+            lastName: 'Chat',
             message: chatInputText,
-            date: new Date()
+            images: ''
+
+            //date: new Date()
         });
         this.setState({
             chatMessages: chatMessagesNew,
@@ -90,7 +131,7 @@ export default class ChatView extends Component <IChatMessageComponentProps, ICh
         }
     };
 
-    renderChatItem = (item) => (
+    renderChatItem = (item, index) => (
         <ChatItem
         item={item}
         deleteItem={this.deleteItem}
@@ -117,6 +158,7 @@ export default class ChatView extends Component <IChatMessageComponentProps, ICh
                        _onTyping={this._onTyping}
                        chatInputText={chatInputText}
                        HEADER_SIZE={HEADER_SIZE}
+                       onIconPressed = {this.onIconPressed}
                    />
                 </TouchableWithoutFeedback>
 
@@ -132,3 +174,17 @@ const styles = StyleSheet.create ({
         backgroundColor: '#232740',
     },
 });
+
+// private showImagePicker = () => {
+//     ImagePicker.showImagePicker(options, (response) => {
+//         if (!response.didCancel && !response.error && !response.customButton) {
+//             const source: IMessageItemImage = {uri: response.uri};
+//             const {images} = this.state;
+//             const newArray = images;
+//             newArray.push(source);
+//             this.setState({
+//                 images: newArray,
+//             })
+//         }
+//     });
+// }
